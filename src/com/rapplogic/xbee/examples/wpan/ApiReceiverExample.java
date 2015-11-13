@@ -52,7 +52,7 @@ public class ApiReceiverExample {
 
 		try {			
 			// my end device 
-			xbee.open("/dev/tty.usbserial-A6005v5M", 9600);
+			xbee.open("/dev/tty.usbserial-145", 9600);
 			// my coordinator
 			//xbee.open("/dev/tty.usbserial-A4004Rim", 9600);
 			

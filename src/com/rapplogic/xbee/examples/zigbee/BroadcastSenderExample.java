@@ -32,6 +32,12 @@ import com.rapplogic.xbee.util.ByteUtils;
  * @author andrew
  */
 public class BroadcastSenderExample {
+	
+	String port;
+	
+	public BroadcastSenderExample(String _port){
+		this.port=_port;
+	}
 
 	private final static Logger log = Logger.getLogger(BroadcastSenderExample.class);
 	
@@ -41,6 +47,7 @@ public class BroadcastSenderExample {
 		
 		try {
 			// replace with your com port and baud rate. this is the com port of my coordinator		
+			//xbee.open(port, 9600);
 			xbee.open("/dev/ttyUSB0", 9600);
 			
 			while (true) {
@@ -71,7 +78,7 @@ public class BroadcastSenderExample {
 	}
 	
 	public static void main(String[] args) throws XBeeException, InterruptedException  {
-		PropertyConfigurator.configure("log4j.properties");
+		//PropertyConfigurator.configure("log4j.properties");
 		new BroadcastSenderExample();
 	}
 }

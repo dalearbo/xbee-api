@@ -19,6 +19,7 @@
 
 package com.rapplogic.xbee.examples.zigbee;
 
+
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
@@ -39,11 +40,13 @@ public class BroadcastReceiverExample {
 		
 		try {
 			// replace with your com port and baud rate. this is the com port of my coordinator
-			xbee.open("/dev/tty.usbserial-A6005uPi", 9600);
+			//xbee.open("/dev/tty.usbserial-00001014", 9600);
+			xbee.open("/dev/ttyUSB0", 9600);
 			
 			while (true) {				
 				XBeeResponse response = xbee.getResponse();
 				log.info("received response " + response);
+				System.out.println("Received response: "+response);
 			}
 		} finally {
 			if (xbee != null && xbee.isConnected()) {
@@ -53,7 +56,7 @@ public class BroadcastReceiverExample {
 	}
 	
 	public static void main(String[] args) throws XBeeException, InterruptedException  {
-		PropertyConfigurator.configure("log4j.properties");
+		//PropertyConfigurator.configure("log4j.properties");
 		new BroadcastReceiverExample();
 	}
 }
