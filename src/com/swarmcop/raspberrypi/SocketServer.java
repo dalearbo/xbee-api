@@ -41,7 +41,7 @@ public class SocketServer{
 
 	 public static void main(String[] args)
 	   { 
-		 PropertyConfigurator.configure("log4j.properties");
+		// PropertyConfigurator.configure("log4j.properties");
 		 	SocketServer mySS = new SocketServer();
 		 	try{
 				mySS.serverSocketReceive = new ServerSocket(SERVERPORTRECEIVE); 
@@ -50,8 +50,8 @@ public class SocketServer{
 					System.out.println ("Waiting for Connection");
 					xbee = new XBee();
 					try {
-						//xbee.open("/dev/ttyUSB0", 9600);
-						xbee.open("/dev/tty.usbserial-00005314", 9600);
+						xbee.open("/dev/ttyUSB0", 9600);
+						//xbee.open("/dev/tty.usbserial-00005314", 9600);
 					} catch (XBeeException e) {
 						e.printStackTrace();
 					}
