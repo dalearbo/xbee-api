@@ -7,6 +7,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import org.apache.log4j.PropertyConfigurator;
+
 import com.rapplogic.xbee.api.XBee;
 import com.rapplogic.xbee.api.XBeeException;
 
@@ -39,7 +41,7 @@ public class SocketServer{
 
 	 public static void main(String[] args)
 	   { 
-		 	
+		 PropertyConfigurator.configure("log4j.properties");
 		 	SocketServer mySS = new SocketServer();
 		 	try{
 				mySS.serverSocketReceive = new ServerSocket(SERVERPORTRECEIVE); 
@@ -48,15 +50,15 @@ public class SocketServer{
 					System.out.println ("Waiting for Connection");
 					xbee = new XBee();
 					try {
-						xbee.open("/dev/ttyUSB0", 9600);
+						//xbee.open("/dev/ttyUSB0", 9600);
+						xbee.open("/dev/tty.usbserial-00005314", 9600);
 					} catch (XBeeException e) {
 						e.printStackTrace();
 					}
 					broadcastSender = new BroadcastSender(xbee);
 					broadcastReceiver = new BroadcastReceiver(xbee);
+					System.out.println("Runserver= "+String.valueOf(mySS.runServer));
 					while(mySS.runServer){
-						mySS.serverSocketReceive.setSoTimeout(30000);
-						mySS.serverSocketSend.setSoTimeout(30000);
 						mySS.socketReceive=mySS.serverSocketReceive.accept();
 						System.out.println("Broadcast sender set up successfully");
 						mySS.socketSend=mySS.serverSocketSend.accept();
@@ -78,13 +80,17 @@ public class SocketServer{
 		              System.out.println ("Closing Server Connection Socket");
 		              mySS.serverSocketReceive.close();
 		              mySS.serverSocketSend.close();
-		              System.exit(1); 
+		              //System.exit(1); 
 		             }
 		         catch (IOException e)
 		             { 
 		              System.err.println("Could not close ports"); 
 		              System.exit(1); 
 		             } 
+	    		catch (NullPointerException e){
+	    			System.err.println("Ports do not exist, can not be closed");
+	    			System.exit(1);
+	    		}
 		        }
 	   }
 	 
@@ -127,7 +133,7 @@ public class SocketServer{
 					String receivedBroadcast = broadcastReceiver.listenForBroadcast();
 					if(receivedBroadcast!=null){
 						System.out.println("Got Message: "+receivedBroadcast);
-						outChannel.writeUTF(receivedBroadcast);
+						outChannel.writeBytes(receivedBroadcast);
 					}
 				} catch (XBeeException e) {
 					e.printStackTrace();

@@ -29,7 +29,7 @@ import com.rapplogic.xbee.api.zigbee.ZNetTxRequest;
 import com.rapplogic.xbee.util.ByteUtils;
 
 /** 
- * @author andrew
+ * @author dale
  */
 public class BroadcastSenderExample {
 	
@@ -41,6 +41,7 @@ public class BroadcastSenderExample {
 
 	private final static Logger log = Logger.getLogger(BroadcastSenderExample.class);
 	
+	@SuppressWarnings("all")
 	private BroadcastSenderExample() throws XBeeException {
 		
 		XBee xbee = new XBee();
@@ -48,11 +49,13 @@ public class BroadcastSenderExample {
 		try {
 			// replace with your com port and baud rate. this is the com port of my coordinator		
 			//xbee.open(port, 9600);
-			xbee.open("/dev/ttyUSB0", 9600);
+			//xbee.open("/dev/ttyUSB0", 9600);
+			xbee.open("/dev/tty.usbserial-00005314", 9600);
 			
 			while (true) {
 				// put some arbitrary data in the payload
-				int[] payload = ByteUtils.stringToIntArray("the\nquick\nbrown\nfox");
+				//int[] payload = ByteUtils.stringToIntArray("the\nquick\nbrown\nfox");
+				int[] payload = ByteUtils.stringToIntArray("simple:32:1:32.996683,-79.970303,0.0,0.0::1:end");
 				
 				ZNetTxRequest request = new ZNetTxRequest(XBeeAddress64.BROADCAST, payload);
 				// make it a broadcast packet
@@ -66,7 +69,7 @@ public class BroadcastSenderExample {
 					
 				try {
 					// wait a bit then send another packet
-					Thread.sleep(15000);
+					Thread.sleep(3000);
 				} catch (InterruptedException e) {
 				}
 			}
@@ -78,7 +81,7 @@ public class BroadcastSenderExample {
 	}
 	
 	public static void main(String[] args) throws XBeeException, InterruptedException  {
-		//PropertyConfigurator.configure("log4j.properties");
+		PropertyConfigurator.configure("log4j.properties");
 		new BroadcastSenderExample();
 	}
 }
